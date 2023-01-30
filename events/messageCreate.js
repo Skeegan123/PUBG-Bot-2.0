@@ -23,7 +23,7 @@ module.exports = {
     }
 
     profile.messagesSent++;
-    profile.pubgBucks += 2;
+    profile.pubgBucks += 20;
     profile.save();
   },
 };

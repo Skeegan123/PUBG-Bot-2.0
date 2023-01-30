@@ -55,7 +55,7 @@ module.exports = {
       case "coin":
         game = "flipped a coin";
         // Has a 50% chance of winning double the amount
-        if (Math.random() < 0.4) {
+        if (Math.random() < 0.45) {
           amount *= 2;
           profile.pubgBucks += amount;
           win = true;
@@ -64,7 +64,7 @@ module.exports = {
       case "dice":
         game = "rolled a dice";
         // Has a 16.666% chance of winning 6 times the amount
-        if (Math.random() < 0.13) {
+        if (Math.random() < 0.15) {
           amount *= 6;
           profile.pubgBucks += amount;
           win = true;
@@ -73,7 +73,7 @@ module.exports = {
       case "wheel":
         game = "spun a wheel";
         // Has a 10% chance of winning 10 times the amount
-        if (Math.random() < 0.06) {
+        if (Math.random() < 0.085) {
           amount *= 10;
           profile.pubgBucks += amount;
           win = true;

@@ -6,18 +6,20 @@ const { EmbedBuilder } = require("discord.js");
 
 module.exports = {
   data: new SlashCommandBuilder()
-    .setName("chat")
+    .setName("imagine")
     .setDescription(
-      "Chat with the bot! Uses OpenAI's GPT-3 API! Costs 100 pubgBucks per use!"
+      "Generate images with OpenAI's DALLE model. Costs 500 pubgBucks per use!"
     )
     .addStringOption((option) =>
       option
         .setName("prompt")
-        .setDescription("What do you want to say to the bot?")
+        .setDescription(
+          "Write a description for the image you want to generate."
+        )
         .setRequired(true)
     ),
   async execute(interaction) {
-    await interaction.reply("Chatting...");
+    await interaction.reply("Generating image...");
 
     let profile;
 
@@ -35,16 +37,16 @@ module.exports = {
       });
     }
 
-    if (profile.pubgBucks < 100) {
+    if (profile.pubgBucks < 250) {
       console.log(
-        `User ${interaction.user.tag} tried to use chat but didn't have enough pubgBucks!`
+        `User ${interaction.user.tag} tried to use imagine but didn't have enough pubgBucks!`
       );
       return await interaction.editReply(
         "You don't have enough pubgBucks to use this command!"
       );
     }
 
-    profile.pubgBucks -= 100;
+    profile.pubgBucks -= 250;
 
     profile.save();
 
@@ -54,35 +56,24 @@ module.exports = {
     const openai = new OpenAIApi(configuration);
 
     const response = await openai
-      .createCompletion({
-        model: "text-davinci-003",
+      .createImage({
         prompt: interaction.options.getString("prompt"),
-        temperature: 0.6,
-        max_tokens: 250,
-        top_p: 1,
-        frequency_penalty: 0.5,
-        presence_penalty: 0.5,
+        n: 1,
+        size: "1024x1024",
       })
       .catch((err) => {
         console.log(err);
         return interaction.editReply("An error occurred! Try again later!");
       });
 
+    image_url = response.data.data[0].url;
+
     const embed = new EmbedBuilder()
       .setColor(0x0099ff)
       .setTitle("Prompt:")
       .setDescription(interaction.options.getString("prompt"))
-      .addFields({
-        name: "Response:",
-        value: response.data.choices[0].text,
-      })
+      .setImage(image_url)
       .setTimestamp();
     interaction.editReply({ embeds: [embed] });
-
-    console.log(
-      "The below interation used " +
-        response.data.usage.total_tokens +
-        " openAI tokens."
-    );
   },
 };
