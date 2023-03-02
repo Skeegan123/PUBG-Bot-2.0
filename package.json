@@ -19,7 +19,7 @@
     "fs": "^0.0.1-security",
     "isomorphic-unfetch": "^3.1.0",
     "mongoose": "^6.8.1",
-    "openai": "^3.1.0",
+    "openai": "^3.2.1",
     "path": "^0.12.7",
     "play-dl": "^1.9.6"
   },
